@@ -1,38 +1,27 @@
 import streamlit as st
 import openai
 from openai import OpenAI
-import base64
 
-st.write("Hello World")
+st.title("GPT-5-Mini")
 
-api_key = st.text_input("OpenAI API 키를 입력하세요", type="password")
+api_key = st.text_input(label="OpenAI API 키를 입력하세요", type="password")
 
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = api_key
 
-prompt_t = st.text_input("텍스트 프롬프트를 입력하세요")
-
-if st.button("실행"):
-    client = OpenAI(api_key=api_key)
-    completion = client.chat.completions.create(
-        model="gpt-5-mini",  
-        messages=[
-                {"role": "user", "content": prompt_t}
-                ]
-                )
-    response_text = completion.choices[0].message.content
-    st.write(response_text)
+client = OpenAI(api_key=api_key)
 
 
-st.markdown("---")
+
+@st.cache_data
+def generate_response(prompt: str):       
+    response = client.responses.create(
+        model="gpt-5-mini",
+        input=prompt
+    )
+    st.write(response.output_text)
 
 
-prompt_i = st.text_input("이미지 프롬프트를 입력하세요")
-
-if st.button("이미지 생성"):
-    client = OpenAI(api_key=api_key)
-    img = client.images.generate(
-    model="gpt-image-1-mini",
-    prompt=prompt_i)
-
-    image_bytes = base64.b64decode(img.data[0].b64_json)
-    st.success("완성된 이미지:")
-    st.image(image_bytes)
+prompt_t=st.text_input("질문을 입력하세요")
+if st.button("ask"):
+    generate_response(prompt_t)
