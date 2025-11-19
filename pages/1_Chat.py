@@ -42,6 +42,7 @@ if prompt := st.chat_input("여기에 메시지를 입력하세요..."):
     response = f"Echo: {prompt}"
     # LLM 응답 보여주기
     with st.chat_message("assistant"):
+        response = get_gpt_response(st.session_state.messages)
         st.markdown(response)
     # 메모리에 LLM 응답 저장
     st.session_state.messages.append({"role": "assistant", "content": response})
