@@ -4,17 +4,16 @@ from openai import OpenAI
 
 st.title("GPT-5-Mini")
 
-api_key = st.text_input(label="OpenAI API 키를 입력하세요", type="password")
+api_key = st.text_input("OpenAI API 키를 입력하세요", type="password")
 
-if 'api_key' not in st.session_state:
+if api_key:
     st.session_state.api_key = api_key
-
-client = OpenAI(api_key=api_key)
 
 
 
 @st.cache_data
-def generate_response(prompt: str):       
+def generate_response(prompt: str):    
+    client = OpenAI(api_key=api_key)   
     response = client.responses.create(
         model="gpt-5-mini",
         input=prompt
