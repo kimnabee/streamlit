@@ -38,7 +38,7 @@ with col1:
         st.session_state.chatpdf_messages = []
 
 with col2:
-    if st.button("Clear PDF"):
+    if st.button("Clear Vector store"):
         st.session_state.chatpdf_messages = []
         client.vector_stores.delete(st.session_state.vector_store.id)
         del st.session_state.vector_store
